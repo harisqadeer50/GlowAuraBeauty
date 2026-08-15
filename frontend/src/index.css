@@ -1,0 +1,90 @@
+@import "tailwindcss";
+
+@theme {
+  /* Brand palette - warm cream/beige/gold luxury skincare */
+  --color-cream: #FBF6EE;
+  --color-cream-dark: #F3E9D8;
+  --color-beige: #EDE1CC;
+  --color-gold: #C9962F;
+  --color-gold-light: #E0AE4E;
+  --color-gold-dark: #A87A22;
+  --color-charcoal: #2B2420;
+  --color-brown: #6B584A;
+  --color-white: #FFFFFF;
+
+  --font-display: "Playfair Display", serif;
+  --font-body: "Poppins", sans-serif;
+
+  --shadow-soft: 0 10px 30px -12px rgba(43, 36, 32, 0.12);
+  --shadow-card: 0 4px 20px -6px rgba(43, 36, 32, 0.08);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-body);
+  color: var(--color-charcoal);
+  background-color: var(--color-cream);
+}
+
+h1, h2, h3, h4, .font-display {
+  font-family: var(--font-display);
+}
+
+/* Custom scrollbar for a premium feel */
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-cream);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-beige);
+  border-radius: 999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-gold-light);
+}
+
+/* Infinite horizontal marquee for the testimonials row. The container
+   renders the review list twice back-to-back and scrolls exactly -50%,
+   so the seam between the end of the first copy and the start of the
+   second is invisible — the loop never visibly "resets". */
+@keyframes marquee-x {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-marquee {
+  animation: marquee-x 18s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-marquee {
+    animation: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Visible keyboard focus for accessibility */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid var(--color-gold);
+  outline-offset: 2px;
+}
