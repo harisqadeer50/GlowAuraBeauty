@@ -11,9 +11,6 @@ export const getFeaturedReviews = asyncHandler(async (req, res) => {
   const reviews = await Product.aggregate([
     { $match: { isActive: true, "reviews.0": { $exists: true } } },
     { $unwind: "$reviews" },
-    // Only surface reasonably positive reviews on the homepage — a 1-star
-    // review is real feedback that belongs on the product page, not
-    // marketing material for the storefront.
     { $match: { "reviews.rating": { $gte: 4 } } },
     { $sort: { "reviews.rating": -1, "reviews.createdAt": -1 } },
     { $limit: Number(limit) },
@@ -37,8 +34,6 @@ export const getFeaturedReviews = asyncHandler(async (req, res) => {
 // @desc    Get products with search, filter, sort, pagination
 // @route   GET /api/products
 // @access  Public
-// Query params: keyword, category (slug), minPrice, maxPrice, skinType, concern,
-//               sort (popularity|price_asc|price_desc|newest|rating), page, limit
 export const getProducts = asyncHandler(async (req, res) => {
   const {
     keyword,
@@ -137,7 +132,7 @@ export const getProductBySlug = asyncHandler(async (req, res) => {
 // @route   POST /api/admin/products
 // @access  Private/Admin
 export const createProduct = asyncHandler(async (req, res) => {
-  const images = (req.files || []).map((f) => `/uploads/${f.filename}`);
+  const images = (req.files || []).map((f) => f.path);
   if (images.length === 0) {
     res.status(400);
     throw new Error("At least one product image is required");
@@ -184,7 +179,7 @@ export const updateProduct = asyncHandler(async (req, res) => {
   });
 
   if (req.files && req.files.length > 0) {
-    product.images = req.files.map((f) => `/uploads/${f.filename}`);
+    product.images = req.files.map((f) => f.path);
   }
 
   await product.save();

@@ -1,5 +1,5 @@
+import "dotenv/config";
 import express from "express";
-import dotenv from "dotenv";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import morgan from "morgan";
@@ -17,7 +17,6 @@ import orderRoutes from "./routes/orderRoutes.js";
 import adminRoutes from "./routes/adminRoutes.js";
 import contactRoutes from "./routes/contactRoutes.js";
 
-dotenv.config();
 connectDB();
 
 const app = express();
@@ -45,9 +44,6 @@ const contactLimiter = rateLimit({
   message: { success: false, message: "Too many messages sent. Please try again later." },
 });
 app.use("/api/contact", contactLimiter);
-
-// Static file serving for uploaded images
-app.use("/uploads", express.static(path.resolve("uploads")));
 
 // Routes
 app.use("/api/auth", authRoutes);

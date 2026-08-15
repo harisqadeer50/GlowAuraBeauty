@@ -6,8 +6,12 @@ export const notFound = (req, res, next) => {
 
 // eslint-disable-next-line no-unused-vars
 export const errorHandler = (err, req, res, next) => {
+  // Always log the full error server-side so we can see what actually broke,
+  // even if the shape sent to the client ends up generic.
+  console.error("ERROR:", err);
+
   let statusCode = res.statusCode === 200 ? 500 : res.statusCode;
-  let message = err.message;
+  let message = err.message || "Something went wrong. Please try again.";
 
   // Mongoose bad ObjectId
   if (err.name === "CastError" && err.kind === "ObjectId") {

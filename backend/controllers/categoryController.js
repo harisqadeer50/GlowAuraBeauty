@@ -27,7 +27,7 @@ export const getCategoryBySlug = asyncHandler(async (req, res) => {
 // @access  Private/Admin
 export const createCategory = asyncHandler(async (req, res) => {
   const { name, group, description, displayOrder } = req.body;
-  const icon = req.file ? `/uploads/${req.file.filename}` : undefined;
+  const icon = req.file ? req.file.path : undefined;
 
   const category = await Category.create({ name, group, description, displayOrder, icon });
   res.status(201).json({ success: true, category });
@@ -49,7 +49,7 @@ export const updateCategory = asyncHandler(async (req, res) => {
   if (description !== undefined) category.description = description;
   if (displayOrder !== undefined) category.displayOrder = displayOrder;
   if (isActive !== undefined) category.isActive = isActive;
-  if (req.file) category.icon = `/uploads/${req.file.filename}`;
+  if (req.file) category.icon = req.file.path;
 
   await category.save();
   res.status(200).json({ success: true, category });
